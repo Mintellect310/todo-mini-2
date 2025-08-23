@@ -22,7 +22,6 @@ export default function App() {
             component={HomeScreen}
             options={{
               title: "Todo Mini",
-              // colored app bar + title
               headerStyle: { backgroundColor: "#eef2ff" },
               headerTitleStyle: { color: "#2563eb", fontWeight: "800" },
               headerTintColor: "#2563eb",

@@ -7,7 +7,6 @@ interface Props {
   onAdd(title: string): void;
 }
 
-// CS: Single Responsibility: collect input & submit, no business logic
 const AddTaskModal: React.FC<Props> = ({ visible, onClose, onAdd }) => {
   const [value, setValue] = useState("");
 

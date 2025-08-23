@@ -27,20 +27,25 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   const [showAdd, setShowAdd] = useState(false);
 
-  // Put title + icon controls in the header bar
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "Your Tasks",
       headerRight: () => (
         <View style={styles.headerActions}>
+          {/* Refresh Tasks */}
           <Pressable
             accessibilityLabel="Refresh tasks"
             onPress={refresh}
-            style={styles.iconBtn}
+            android_ripple={{ color: "#c7d2fe", borderless: true, radius: 22 }}
+            style={({ pressed }) => [
+              styles.iconBtn,
+              pressed && styles.iconBtnPressed,
+            ]}
           >
-            <Ionicons name="refresh" size={22} color="#374151" />
+            <Ionicons name="refresh" size={22} color="#1f2937" />
           </Pressable>
 
+          {/* Show/Hide Completed Tasks */}
           <Pressable
             accessibilityLabel={showCompleted ? "Hide completed" : "Show completed"}
             onPress={() => setShowCompleted((v) => !v)}
@@ -53,6 +58,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             )}
           </Pressable>
 
+          {/* Open Completed Tasks */}
           <Pressable
             accessibilityLabel="Open completed list"
             onPress={() => navigation.navigate("Completed")}
@@ -84,7 +90,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <Pressable
         accessibilityLabel="Add task"
         onPress={() => setShowAdd(true)}
-        style={styles.fab}
+        android_ripple={{ color: "#93c5fd", radius: 28 }}
+        style={({ pressed }) => [
+          styles.fab,
+          pressed && styles.fabPressed,
+        ]}
       >
         <Ionicons name="add" size={28} color="#ffffff" />
       </Pressable>
@@ -113,6 +123,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#eef2ff",
   },
+  iconBtnPressed: {
+    backgroundColor: "#e0e7ff",
+    transform: [{ scale: 0.96 }],
+  },
 
   fab: {
     position: "absolute",
@@ -129,6 +143,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 3 },
+  },
+  fabPressed: {
+    transform: [{ scale: 0.96 }],
+    shadowOpacity: 0.12,
   },
 });
 

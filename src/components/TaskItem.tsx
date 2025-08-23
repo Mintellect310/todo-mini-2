@@ -10,14 +10,20 @@ interface Props {
   showStrikeThrough?: boolean;
 }
 
-// CS: minimal props = Interface Segregation; single responsibility: render and simple inline edit
 const TaskItem: React.FC<Props> = ({ task, onToggle, onUpdateTitle, onDelete, showStrikeThrough = true }) => {
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(task.title);
 
   return (
     <View style={styles.row}>
-      <Pressable onPress={onToggle} style={styles.checkbox}>
+      <Pressable
+        onPress={onToggle}
+        style={({ pressed }) => [
+          styles.checkbox,
+          pressed && { transform: [{ scale: 0.95 }], opacity: 0.8 },
+        ]}
+        android_ripple={{ color: "#e5e7eb", borderless: false }}
+      >
         <Text style={styles.checkmark}>{task.done ? "✔︎" : ""}</Text>
       </Pressable>
 
@@ -41,9 +47,18 @@ const TaskItem: React.FC<Props> = ({ task, onToggle, onUpdateTitle, onDelete, sh
         </Pressable>
       )}
 
-      <Pressable onPress={onDelete} style={styles.deleteBtn}>
+      <Pressable
+        onPress={onDelete}
+        style={({ pressed }) => [
+          styles.deleteBtn,
+          pressed && { transform: [{ scale: 0.95 }], opacity: 0.8 },
+        ]}
+        android_ripple={{ color: "#fecaca", borderless: true, radius: 18 }}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+      >
         <Text style={styles.deleteText}>✕</Text>
       </Pressable>
+
     </View>
   );
 };

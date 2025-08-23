@@ -2,7 +2,6 @@ import React, { createContext, useContext, useMemo } from "react";
 import { AsyncStorageTaskRepository } from "../repo/AsyncStorageTaskRepository";
 import { useTaskViewModel, TaskVM } from "../viewmodel/taskViewModel";
 
-// Context provides the VM to the whole app (MVVM)
 const TaskContext = createContext<TaskVM | null>(null);
 
 export const TaskProvider: React.FC<React.PropsWithChildren> = ({ children }) => {

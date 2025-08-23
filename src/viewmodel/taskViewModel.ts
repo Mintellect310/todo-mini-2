@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Task } from "../models/Task";
 import { TaskRepository } from "../repo/TaskRepository";
 
-// ViewModel public shape (what the UI depends on)
-// CS: UI depends on this interface; concrete impl (repo) is injected (DI)
 export interface TaskVM {
   state: {
     tasks: Task[];
@@ -19,7 +17,6 @@ export interface TaskVM {
 }
 
 function uuid() {
-  // tiny UUID for demo purposes
   return Math.random().toString(36).slice(2, 10);
 }
 
@@ -42,18 +39,16 @@ export function useTaskViewModel(repo: TaskRepository): TaskVM {
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const add = async (title: string) => {
     const task: Task = { id: uuid(), title, done: false };
-    const next = [...tasks, task]; // CS: immutability keeps render predictable
+    const next = [...tasks, task];
     setTasks(next);
     await repo.save(task);
   };
 
   const toggle = async (id: string) => {
-    // CS: O(n) update; swap to Map<TaskId, Task> for O(1) if scaling
     const next = tasks.map(t => (t.id === id ? { ...t, done: !t.done } : t));
     setTasks(next);
     const changed = next.find(t => t.id === id)!;

@@ -11,7 +11,6 @@ interface Props {
   showStrikeThrough?: boolean;
 }
 
-// CS: uses FlatList → virtualization lowers render cost vs naive map
 const TaskList: React.FC<Props> = ({ tasks, onToggle, onUpdateTitle, onDelete, showStrikeThrough = true }) => {
   if (!tasks.length) {
     return (

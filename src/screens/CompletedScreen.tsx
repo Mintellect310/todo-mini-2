@@ -3,7 +3,6 @@ import { SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { useTasks } from "../context/TaskProvider";
 import TaskList from "../components/TaskList";
 
-// Reuses TaskList + TaskItem. Users can uncheck (toggle) or delete here as well.
 const CompletedScreen: React.FC = () => {
   const { state, toggle, updateTitle, remove } = useTasks();
   const { tasks } = state;
@@ -19,10 +18,10 @@ const CompletedScreen: React.FC = () => {
       ) : (
         <TaskList
           tasks={doneTasks}
-          onToggle={(id) => toggle(id)}            // allows “undo” (uncomplete)
+          onToggle={(id) => toggle(id)}
           onUpdateTitle={(id, title) => updateTitle(id, title)}
           onDelete={(id) => remove(id)}
-          showStrikeThrough={false}                 // completed tasks are grey, not struck through
+          showStrikeThrough={false}
         />
       )}
     </SafeAreaView>
