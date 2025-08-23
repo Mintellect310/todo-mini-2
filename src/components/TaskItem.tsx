@@ -7,10 +7,11 @@ interface Props {
   onToggle(): void;
   onUpdateTitle(title: string): void;
   onDelete(): void;
+  showStrikeThrough?: boolean;
 }
 
 // CS: minimal props = Interface Segregation; single responsibility: render and simple inline edit
-const TaskItem: React.FC<Props> = ({ task, onToggle, onUpdateTitle, onDelete }) => {
+const TaskItem: React.FC<Props> = ({ task, onToggle, onUpdateTitle, onDelete, showStrikeThrough = true }) => {
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(task.title);
 
@@ -34,7 +35,7 @@ const TaskItem: React.FC<Props> = ({ task, onToggle, onUpdateTitle, onDelete }) 
         />
       ) : (
         <Pressable onLongPress={() => setEditing(true)} style={{ flex: 1 }}>
-          <Text style={[styles.title, task.done && styles.done]} numberOfLines={2}>
+          <Text style={[styles.title, task.done && showStrikeThrough && styles.done, task.done && !showStrikeThrough && styles.grey]} numberOfLines={2}>
             {task.title}
           </Text>
         </Pressable>
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
   checkmark: { fontSize: 16 },
   title: { flex: 1, fontSize: 16 },
   done: { textDecorationLine: "line-through", color: "#888" },
+  grey: { color: "#666" },
   input: {
     borderBottomWidth: 1,
     borderColor: "#aaa",

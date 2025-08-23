@@ -22,6 +22,7 @@ const CompletedScreen: React.FC = () => {
           onToggle={(id) => toggle(id)}            // allows “undo” (uncomplete)
           onUpdateTitle={(id, title) => updateTitle(id, title)}
           onDelete={(id) => remove(id)}
+          showStrikeThrough={false}                 // completed tasks are grey, not struck through
         />
       )}
     </SafeAreaView>

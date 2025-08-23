@@ -8,10 +8,11 @@ interface Props {
   onToggle(id: string): void;
   onUpdateTitle(id: string, title: string): void;
   onDelete(id: string): void;
+  showStrikeThrough?: boolean;
 }
 
 // CS: uses FlatList → virtualization lowers render cost vs naive map
-const TaskList: React.FC<Props> = ({ tasks, onToggle, onUpdateTitle, onDelete }) => {
+const TaskList: React.FC<Props> = ({ tasks, onToggle, onUpdateTitle, onDelete, showStrikeThrough = true }) => {
   if (!tasks.length) {
     return (
       <View style={styles.empty}>
@@ -30,6 +31,7 @@ const TaskList: React.FC<Props> = ({ tasks, onToggle, onUpdateTitle, onDelete })
           onToggle={() => onToggle(item.id)}
           onUpdateTitle={(title) => onUpdateTitle(item.id, title)}
           onDelete={() => onDelete(item.id)}
+          showStrikeThrough={showStrikeThrough}
         />
       )}
     />
