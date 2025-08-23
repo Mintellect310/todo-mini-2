@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useLayoutEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
   SafeAreaView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import { useTasks } from "../context/TaskProvider";
@@ -20,57 +19,54 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const { state, add, toggle, updateTitle, remove, refresh } = useTasks();
   const { tasks, loading } = state;
 
-  // Filter: show/hide completed on Home
   const [showCompleted, setShowCompleted] = useState(true);
   const visibleTasks = useMemo(
     () => tasks.filter((t) => (showCompleted ? true : !t.done)),
     [tasks, showCompleted]
   );
 
-  // Add modal
   const [showAdd, setShowAdd] = useState(false);
 
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* Header row under the app bar */}
-      <View style={styles.header}>
-        <Text style={styles.h1}>Your Tasks</Text>
-
-        <View style={styles.actions}>
-          {/* Refresh */}
+  // Put title + icon controls in the header bar
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "Your Tasks",
+      headerRight: () => (
+        <View style={styles.headerActions}>
           <Pressable
             accessibilityLabel="Refresh tasks"
             onPress={refresh}
             style={styles.iconBtn}
           >
-            <Ionicons name="refresh" size={20} color="#374151" />
+            <Ionicons name="refresh" size={22} color="#374151" />
           </Pressable>
 
-          {/* Toggle show/hide completed */}
           <Pressable
             accessibilityLabel={showCompleted ? "Hide completed" : "Show completed"}
             onPress={() => setShowCompleted((v) => !v)}
             style={styles.iconBtn}
           >
             {showCompleted ? (
-              <Ionicons name="eye-off-outline" size={20} color="#374151" />
+              <Ionicons name="eye-off-outline" size={22} color="#374151" />
             ) : (
-              <Ionicons name="eye-outline" size={20} color="#374151" />
+              <Ionicons name="eye-outline" size={22} color="#374151" />
             )}
           </Pressable>
 
-          {/* Go to Completed list */}
           <Pressable
             accessibilityLabel="Open completed list"
             onPress={() => navigation.navigate("Completed")}
             style={styles.iconBtn}
           >
-            <Ionicons name="checkmark-done-outline" size={20} color="#374151" />
+            <Ionicons name="checkmark-done-outline" size={22} color="#374151" />
           </Pressable>
         </View>
-      </View>
+      ),
+    });
+  }, [navigation, refresh, showCompleted]);
 
-      {/* Content */}
+  return (
+    <SafeAreaView style={styles.container}>
       {loading ? (
         <View style={styles.center}>
           <ActivityIndicator />
@@ -93,7 +89,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         <Ionicons name="add" size={28} color="#ffffff" />
       </Pressable>
 
-      {/* Add modal */}
       <AddTaskModal visible={showAdd} onClose={() => setShowAdd(false)} onAdd={add} />
     </SafeAreaView>
   );
@@ -101,22 +96,12 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
+  center: { flex: 1, justifyContent: "center", alignItems: "center" },
 
-  header: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "#ddd",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 8,
-  },
-  h1: { fontSize: 20, fontWeight: "700" },
-
-  actions: {
+  headerActions: {
     flexDirection: "row",
     gap: 8,
+    marginRight: 2,
   },
   iconBtn: {
     width: 36,
@@ -126,10 +111,8 @@ const styles = StyleSheet.create({
     borderColor: "#d1d5db",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#eef2ff",
   },
-
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
 
   fab: {
     position: "absolute",
@@ -141,8 +124,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#2563eb",
-    elevation: 3, // Android shadow
-    shadowColor: "#000", // iOS shadow
+    elevation: 3,
+    shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 3 },
